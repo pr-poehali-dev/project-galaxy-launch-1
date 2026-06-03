@@ -4,7 +4,6 @@ import { InstagramIcon } from "./icons/instagram-icon"
 import { LinkedInIcon } from "./icons/linkedin-icon"
 import { Avatar } from "./Avatar"
 import { SocialIcon } from "./SocialIcon"
-import { WaitlistForm } from "./WaitlistForm"
 
 const XP_PER_SIGNUP = 50
 const TOTAL_XP_FOR_LEVEL = 200
@@ -181,9 +180,19 @@ export function WaitlistSignup() {
             <XpBar xp={xp} total={TOTAL_XP_FOR_LEVEL} />
           </div>
 
-          {/* Form */}
-          <div className="w-full">
-            <WaitlistForm onSuccess={handleSuccess} />
+          {/* CTA Button */}
+          <div className="w-full space-y-3">
+            <button
+              onClick={handleSuccess}
+              className="w-full font-extrabold text-white text-lg py-4 rounded-2xl transition-all duration-150 active:scale-95 hover:brightness-110"
+              style={{
+                background: "linear-gradient(180deg, #58CC02, #46A302)",
+                boxShadow: "0 4px 0 #389200",
+              }}
+            >
+              Начать тест ⚡
+            </button>
+            <p className="text-xs text-gray-500 text-center">Получите <span className="text-yellow-400 font-bold">+50 XP</span> за прохождение первого теста</p>
           </div>
 
           {/* Avatars */}
