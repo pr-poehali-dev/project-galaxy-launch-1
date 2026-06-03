@@ -195,15 +195,7 @@ export function WaitlistSignup() {
             <p className="text-xs text-gray-500 text-center">Получите <span className="text-yellow-400 font-bold">+50 XP</span> за прохождение первого теста</p>
           </div>
 
-          {/* Avatars */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="flex -space-x-2">
-              <Avatar initials="АК" index={0} />
-              <Avatar initials="МП" index={1} />
-              <Avatar initials="ЕС" index={2} />
-            </div>
-            <p className="text-white font-semibold text-sm">{waitlistCount}+ специалистов уже в списке</p>
-          </div>
+
         </div>
 
         {/* Social */}
