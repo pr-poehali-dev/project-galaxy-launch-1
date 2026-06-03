@@ -3,8 +3,8 @@ import { XIcon } from "./icons/x-icon"
 import { InstagramIcon } from "./icons/instagram-icon"
 import { LinkedInIcon } from "./icons/linkedin-icon"
 import { SocialIcon } from "./SocialIcon"
+import { Quiz } from "./Quiz"
 
-const XP_PER_SIGNUP = 50
 const TOTAL_XP_FOR_LEVEL = 200
 
 const STREAK_DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
@@ -104,7 +104,10 @@ function StatBadge({ icon, label, value }: { icon: string; label: string; value:
   )
 }
 
+type Screen = "home" | "quiz"
+
 export function WaitlistSignup() {
+  const [screen, setScreen] = useState<Screen>("home")
   const [xp, setXp] = useState(0)
   const [showConfetti, setShowConfetti] = useState(false)
   const [streak, setStreak] = useState(false)
@@ -123,18 +126,30 @@ export function WaitlistSignup() {
         70%  { transform: scale(0.9); }
         100% { transform: scale(1); }
       }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%       { transform: translateX(-8px); }
+        40%       { transform: translateX(8px); }
+        60%       { transform: translateX(-5px); }
+        80%       { transform: translateX(5px); }
+      }
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
       .bounce-xp { animation: bounce-in 0.5s ease; }
+      .animate-fade-in { animation: fade-in 0.4s ease; }
     `
     document.head.appendChild(style)
     return () => document.head.removeChild(style)
   }, [])
 
-  const handleSuccess = () => {
-    setXp(prev => prev + XP_PER_SIGNUP)
+  const handleQuizFinish = (xpEarned: number) => {
+    setXp(prev => prev + xpEarned)
     setStreak(true)
     setShowConfetti(true)
     setBounceXp(true)
-    setTimeout(() => setShowConfetti(false), 2000)
+    setTimeout(() => setShowConfetti(false), 2500)
     setTimeout(() => setBounceXp(false), 600)
   }
 
@@ -142,81 +157,78 @@ export function WaitlistSignup() {
     <>
       <Confetti active={showConfetti} />
       <div className="w-full max-w-xl mx-auto p-6 flex flex-col justify-between min-h-screen">
-        <div className="flex-1 flex flex-col justify-center items-center text-center gap-6">
+        <div className="flex-1 flex flex-col justify-center gap-6">
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm font-bold px-4 py-1.5 rounded-full">
-            ⚡ Скоро запуск
-          </div>
+          {screen === "home" && (
+            <div className="flex flex-col items-center text-center gap-6">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm font-bold px-4 py-1.5 rounded-full">
+                ⚡ Скоро запуск
+              </div>
 
-          {/* Title */}
-          <div>
-            <h2 className="text-4xl sm:text-5xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-br from-gray-100 to-gray-500">
-              Охрана труда<br />в электроэнергетике
-            </h2>
-            <p className="text-base sm:text-lg text-gray-400 max-w-md">
-              Интерактивное обучение для энергетиков — курсы, тесты и нормативная база. Учись как в игре, работай безопасно.
-            </p>
-          </div>
+              {/* Title */}
+              <div>
+                <h2 className="text-4xl sm:text-5xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-br from-gray-100 to-gray-500">
+                  Охрана труда<br />в электроэнергетике
+                </h2>
+                <p className="text-base sm:text-lg text-gray-400 max-w-md">
+                  Интерактивное обучение для энергетиков — курсы, тесты и нормативная база. Учись как в игре, работай безопасно.
+                </p>
+              </div>
 
-          {/* Stats */}
-          <div className="flex gap-3 justify-center flex-wrap">
-            <StatBadge icon="🏆" label="уровней" value="12" />
-            <StatBadge icon="📋" label="модулей" value="36" />
-          </div>
+              {/* Stats */}
+              <div className="flex gap-3 justify-center flex-wrap">
+                <StatBadge icon="🏆" label="уровней" value="12" />
+                <StatBadge icon="📋" label="модулей" value="36" />
+              </div>
 
-          {/* Streak */}
-          <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-4">
-            <p className="text-xs text-gray-500 uppercase tracking-widest mb-3 font-semibold">Серия дней</p>
-            <StreakRow active={streak} />
-          </div>
+              {/* Streak */}
+              <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p className="text-xs text-gray-500 uppercase tracking-widest mb-3 font-semibold">Серия дней</p>
+                <StreakRow active={streak} />
+              </div>
 
-          {/* XP Bar */}
-          <div className={`w-full ${bounceXp ? "bounce-xp" : ""}`}>
-            <XpBar xp={xp} total={TOTAL_XP_FOR_LEVEL} />
-          </div>
+              {/* XP Bar */}
+              <div className={`w-full ${bounceXp ? "bounce-xp" : ""}`}>
+                <XpBar xp={xp} total={TOTAL_XP_FOR_LEVEL} />
+              </div>
 
-          {/* CTA Button */}
-          <div className="w-full space-y-3">
-            <button
-              onClick={handleSuccess}
-              className="w-full font-extrabold text-white text-lg py-4 rounded-2xl transition-all duration-150 active:scale-95 hover:brightness-110"
-              style={{
-                background: "linear-gradient(180deg, #58CC02, #46A302)",
-                boxShadow: "0 4px 0 #389200",
-              }}
-            >
-              Начать тест ⚡
-            </button>
-            <p className="text-xs text-gray-500 text-center">Получите <span className="text-yellow-400 font-bold">+50 XP</span> за прохождение первого теста</p>
-          </div>
+              {/* CTA */}
+              <div className="w-full space-y-3">
+                <button
+                  onClick={() => setScreen("quiz")}
+                  className="w-full font-extrabold text-white text-lg py-4 rounded-2xl transition-all duration-150 active:scale-95 hover:brightness-110"
+                  style={{
+                    background: "linear-gradient(180deg, #58CC02, #46A302)",
+                    boxShadow: "0 4px 0 #389200",
+                  }}
+                >
+                  Начать тест ⚡
+                </button>
+                <p className="text-xs text-gray-500 text-center">Получите <span className="text-yellow-400 font-bold">+XP</span> за прохождение первого теста</p>
+              </div>
+            </div>
+          )}
 
+          {screen === "quiz" && (
+            <div className="animate-fade-in">
+              <button
+                onClick={() => setScreen("home")}
+                className="flex items-center gap-1 text-gray-500 hover:text-gray-300 text-sm mb-5 transition-colors"
+              >
+                ← Назад
+              </button>
+              <Quiz onFinish={handleQuizFinish} />
+            </div>
+          )}
 
         </div>
 
         {/* Social */}
         <div className="pt-8 flex justify-center space-x-6">
-          <SocialIcon
-            href="https://x.com/example"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="X (Twitter)"
-            icon={<XIcon className="w-5 h-5" />}
-          />
-          <SocialIcon
-            href="https://instagram.com/example"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            icon={<InstagramIcon className="w-5 h-5" />}
-          />
-          <SocialIcon
-            href="https://linkedin.com/company/example"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            icon={<LinkedInIcon className="w-5 h-5" />}
-          />
+          <SocialIcon href="https://x.com/example" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" icon={<XIcon className="w-5 h-5" />} />
+          <SocialIcon href="https://instagram.com/example" target="_blank" rel="noopener noreferrer" aria-label="Instagram" icon={<InstagramIcon className="w-5 h-5" />} />
+          <SocialIcon href="https://linkedin.com/company/example" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" icon={<LinkedInIcon className="w-5 h-5" />} />
         </div>
       </div>
     </>
