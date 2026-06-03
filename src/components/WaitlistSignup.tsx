@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { XIcon } from "./icons/x-icon"
 import { InstagramIcon } from "./icons/instagram-icon"
 import { LinkedInIcon } from "./icons/linkedin-icon"
-import { Avatar } from "./Avatar"
 import { SocialIcon } from "./SocialIcon"
 
 const XP_PER_SIGNUP = 50
@@ -106,7 +105,6 @@ function StatBadge({ icon, label, value }: { icon: string; label: string; value:
 }
 
 export function WaitlistSignup() {
-  const [waitlistCount, setWaitlistCount] = useState(100)
   const [xp, setXp] = useState(0)
   const [showConfetti, setShowConfetti] = useState(false)
   const [streak, setStreak] = useState(false)
@@ -132,7 +130,6 @@ export function WaitlistSignup() {
   }, [])
 
   const handleSuccess = () => {
-    setWaitlistCount(prev => prev + 1)
     setXp(prev => prev + XP_PER_SIGNUP)
     setStreak(true)
     setShowConfetti(true)
@@ -164,7 +161,6 @@ export function WaitlistSignup() {
 
           {/* Stats */}
           <div className="flex gap-3 justify-center flex-wrap">
-            <StatBadge icon="👷" label="специалистов" value={`${waitlistCount}+`} />
             <StatBadge icon="🏆" label="уровней" value="12" />
             <StatBadge icon="📋" label="модулей" value="36" />
           </div>
