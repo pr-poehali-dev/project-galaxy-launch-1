@@ -5,6 +5,7 @@ import { LinkedInIcon } from "./icons/linkedin-icon"
 import { SocialIcon } from "./SocialIcon"
 import { Quiz } from "./Quiz"
 import { Leaderboard } from "./Leaderboard"
+import { Library } from "./Library"
 
 const TOTAL_XP_FOR_LEVEL = 200
 
@@ -105,7 +106,7 @@ function StatBadge({ icon, label, value }: { icon: string; label: string; value:
   )
 }
 
-type Screen = "home" | "quiz" | "leaderboard"
+type Screen = "home" | "quiz" | "leaderboard" | "library"
 
 export function WaitlistSignup() {
   const [screen, setScreen] = useState<Screen>("home")
@@ -156,6 +157,7 @@ export function WaitlistSignup() {
 
   const NAV = [
     { key: "home" as Screen, icon: "🏠", label: "Главная" },
+    { key: "library" as Screen, icon: "📚", label: "Библиотека" },
     { key: "leaderboard" as Screen, icon: "🏆", label: "Рейтинг" },
   ]
 
@@ -244,6 +246,13 @@ export function WaitlistSignup() {
                 ← Назад
               </button>
               <Quiz onFinish={handleQuizFinish} />
+            </div>
+          )}
+
+          {/* LIBRARY */}
+          {screen === "library" && (
+            <div className="animate-fade-in">
+              <Library />
             </div>
           )}
 
