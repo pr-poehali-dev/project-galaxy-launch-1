@@ -4,6 +4,7 @@ import { InstagramIcon } from "./icons/instagram-icon"
 import { LinkedInIcon } from "./icons/linkedin-icon"
 import { SocialIcon } from "./SocialIcon"
 import { Quiz } from "./Quiz"
+import { Leaderboard } from "./Leaderboard"
 
 const TOTAL_XP_FOR_LEVEL = 200
 
@@ -104,7 +105,7 @@ function StatBadge({ icon, label, value }: { icon: string; label: string; value:
   )
 }
 
-type Screen = "home" | "quiz"
+type Screen = "home" | "quiz" | "leaderboard"
 
 export function WaitlistSignup() {
   const [screen, setScreen] = useState<Screen>("home")
@@ -128,10 +129,10 @@ export function WaitlistSignup() {
       }
       @keyframes shake {
         0%, 100% { transform: translateX(0); }
-        20%       { transform: translateX(-8px); }
-        40%       { transform: translateX(8px); }
-        60%       { transform: translateX(-5px); }
-        80%       { transform: translateX(5px); }
+        20%      { transform: translateX(-8px); }
+        40%      { transform: translateX(8px); }
+        60%      { transform: translateX(-5px); }
+        80%      { transform: translateX(5px); }
       }
       @keyframes fade-in {
         from { opacity: 0; transform: translateY(12px); }
@@ -153,20 +154,47 @@ export function WaitlistSignup() {
     setTimeout(() => setBounceXp(false), 600)
   }
 
+  const NAV = [
+    { key: "home" as Screen, icon: "🏠", label: "Главная" },
+    { key: "leaderboard" as Screen, icon: "🏆", label: "Рейтинг" },
+  ]
+
   return (
     <>
       <Confetti active={showConfetti} />
       <div className="w-full max-w-xl mx-auto p-6 flex flex-col justify-between min-h-screen">
+
+        {/* Top nav */}
+        {screen !== "quiz" && (
+          <div className="flex gap-2 mb-2">
+            {NAV.map(n => (
+              <button
+                key={n.key}
+                onClick={() => setScreen(n.key)}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
+                  screen === n.key
+                    ? "bg-white/10 text-white border border-white/20"
+                    : "text-gray-500 hover:text-gray-300"
+                }`}
+              >
+                {n.icon} {n.label}
+              </button>
+            ))}
+            <div className="ml-auto flex items-center gap-1 text-yellow-400 font-extrabold text-sm">
+              ⚡ {xp} XP
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 flex flex-col justify-center gap-6">
 
+          {/* HOME */}
           {screen === "home" && (
             <div className="flex flex-col items-center text-center gap-6">
-              {/* Badge */}
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm font-bold px-4 py-1.5 rounded-full">
                 ⚡ Скоро запуск
               </div>
 
-              {/* Title */}
               <div>
                 <h2 className="text-4xl sm:text-5xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-br from-gray-100 to-gray-500">
                   Охрана труда<br />в электроэнергетике
@@ -176,24 +204,20 @@ export function WaitlistSignup() {
                 </p>
               </div>
 
-              {/* Stats */}
               <div className="flex gap-3 justify-center flex-wrap">
                 <StatBadge icon="🏆" label="уровней" value="12" />
                 <StatBadge icon="📋" label="модулей" value="36" />
               </div>
 
-              {/* Streak */}
               <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-4">
                 <p className="text-xs text-gray-500 uppercase tracking-widest mb-3 font-semibold">Серия дней</p>
                 <StreakRow active={streak} />
               </div>
 
-              {/* XP Bar */}
               <div className={`w-full ${bounceXp ? "bounce-xp" : ""}`}>
                 <XpBar xp={xp} total={TOTAL_XP_FOR_LEVEL} />
               </div>
 
-              {/* CTA */}
               <div className="w-full space-y-3">
                 <button
                   onClick={() => setScreen("quiz")}
@@ -210,6 +234,7 @@ export function WaitlistSignup() {
             </div>
           )}
 
+          {/* QUIZ */}
           {screen === "quiz" && (
             <div className="animate-fade-in">
               <button
@@ -219,6 +244,13 @@ export function WaitlistSignup() {
                 ← Назад
               </button>
               <Quiz onFinish={handleQuizFinish} />
+            </div>
+          )}
+
+          {/* LEADERBOARD */}
+          {screen === "leaderboard" && (
+            <div className="animate-fade-in">
+              <Leaderboard myXp={xp} />
             </div>
           )}
 
