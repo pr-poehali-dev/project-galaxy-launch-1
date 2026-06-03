@@ -25,8 +25,8 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
 
     // Mock success response
     toast({
-      title: "Отлично!",
-      description: "Вы добавлены в список ожидания!",
+      title: "Вы в списке!",
+      description: "Уведомим вас первыми, когда приложение будет готово.",
       duration: 5000,
     })
 
