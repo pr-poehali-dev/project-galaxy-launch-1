@@ -108,12 +108,31 @@ function StatBadge({ icon, label, value }: { icon: string; label: string; value:
 
 type Screen = "home" | "quiz" | "leaderboard" | "library"
 
+function loadState() {
+  try {
+    return {
+      xp: Number(localStorage.getItem("ot_xp") || 0),
+      streak: localStorage.getItem("ot_streak") === "true",
+    }
+  } catch {
+    return { xp: 0, streak: false }
+  }
+}
+
 export function WaitlistSignup() {
   const [screen, setScreen] = useState<Screen>("home")
-  const [xp, setXp] = useState(0)
+  const [xp, setXp] = useState(() => loadState().xp)
   const [showConfetti, setShowConfetti] = useState(false)
-  const [streak, setStreak] = useState(false)
+  const [streak, setStreak] = useState(() => loadState().streak)
   const [bounceXp, setBounceXp] = useState(false)
+
+  useEffect(() => {
+    try { localStorage.setItem("ot_xp", String(xp)) } catch (e) { console.warn(e) }
+  }, [xp])
+
+  useEffect(() => {
+    try { localStorage.setItem("ot_streak", String(streak)) } catch (e) { console.warn(e) }
+  }, [streak])
 
   useEffect(() => {
     const style = document.createElement("style")

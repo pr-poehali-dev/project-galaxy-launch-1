@@ -248,10 +248,17 @@ interface LibraryProps {
   onXpEarned: (xp: number) => void
 }
 
+function loadReadIds(): Set<number> {
+  try {
+    const raw = localStorage.getItem("ot_read_ids")
+    return raw ? new Set(JSON.parse(raw) as number[]) : new Set()
+  } catch (e) { console.warn(e); return new Set() }
+}
+
 export function Library({ onXpEarned }: LibraryProps) {
   const [selected, setSelected] = useState<typeof TOPICS[0] | null>(null)
   const [filter, setFilter] = useState("Все")
-  const [readIds, setReadIds] = useState<Set<number>>(new Set())
+  const [readIds, setReadIds] = useState<Set<number>>(() => loadReadIds())
 
   const categories = ["Все", ...Array.from(new Set(TOPICS.map(t => t.category)))]
   const filtered = filter === "Все" ? TOPICS : TOPICS.filter(t => t.category === filter)
@@ -259,7 +266,9 @@ export function Library({ onXpEarned }: LibraryProps) {
   const totalCount = TOPICS.length
 
   const handleRead = (id: number, xp: number) => {
-    setReadIds(prev => new Set([...prev, id]))
+    const next = new Set([...readIds, id])
+    setReadIds(next)
+    try { localStorage.setItem("ot_read_ids", JSON.stringify([...next])) } catch (e) { console.warn(e) }
     onXpEarned(xp)
   }
 
