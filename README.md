@@ -1,3 +1,7 @@
-# project-galaxy-launch-1
+# Лендинг списка ожидания
 
-Initial repository setup for pr-poehali-dev/project-galaxy-launch-1
+![Preview](https://cdn.poehali.dev/templates/launch-waitlist-ru/preview-ru.jpg)
+
+Минималистичная страница сбора email-адресов для запуска нового продукта. Темная тема с синим градиентом, форма подписки с валидацией, счетчик участников, аватары первых подписчиков и иконки социальных сетей. Идеально подходит для pre-launch кампаний и создания ажиотажа перед запуском.
+
+`"tags": ["waitlist", "dark", "gradient", "landing", "saas", "general"]`
