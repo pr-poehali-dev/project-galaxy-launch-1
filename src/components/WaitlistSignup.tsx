@@ -158,6 +158,10 @@ export function WaitlistSignup() {
         from { opacity: 0; transform: translateY(12px); }
         to   { opacity: 1; transform: translateY(0); }
       }
+      @keyframes mascot-float {
+        0%, 100% { transform: translateY(0px); }
+        50%      { transform: translateY(-8px); }
+      }
       .bounce-xp { animation: bounce-in 0.5s ease; }
       .animate-fade-in { animation: fade-in 0.4s ease; }
     `
@@ -214,6 +218,35 @@ export function WaitlistSignup() {
             <div className="flex flex-col items-center text-center gap-6">
               <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm font-bold px-4 py-1.5 rounded-full">
                 ⚡ Скоро запуск
+              </div>
+
+              {/* Mascot */}
+              <div style={{ animation: "mascot-float 3s ease-in-out infinite" }}>
+                <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Helmet */}
+                  <rect x="22" y="8" width="52" height="38" rx="16" fill="#FFD700" />
+                  <rect x="28" y="14" width="40" height="26" rx="10" fill="#1a1a1a" />
+                  {/* Visor shine */}
+                  <rect x="32" y="17" width="12" height="5" rx="2.5" fill="#58CC02" opacity="0.7" />
+                  {/* Eyes */}
+                  <circle cx="37" cy="27" r="5" fill="#58CC02" />
+                  <circle cx="59" cy="27" r="5" fill="#58CC02" />
+                  <circle cx="38.5" cy="25.5" r="1.5" fill="white" />
+                  <circle cx="60.5" cy="25.5" r="1.5" fill="white" />
+                  {/* Antenna */}
+                  <rect x="46" y="2" width="4" height="8" rx="2" fill="#FFD700" />
+                  <circle cx="48" cy="2" r="3" fill="#58CC02" />
+                  {/* Body */}
+                  <rect x="26" y="48" width="44" height="30" rx="12" fill="#2a2a2a" stroke="#FFD700" strokeWidth="2" />
+                  {/* Chest bolt */}
+                  <text x="48" y="68" textAnchor="middle" fontSize="16" fill="#FFD700">⚡</text>
+                  {/* Arms */}
+                  <rect x="10" y="50" width="14" height="8" rx="4" fill="#2a2a2a" stroke="#FFD700" strokeWidth="1.5" />
+                  <rect x="72" y="50" width="14" height="8" rx="4" fill="#2a2a2a" stroke="#FFD700" strokeWidth="1.5" />
+                  {/* Legs */}
+                  <rect x="32" y="78" width="12" height="14" rx="5" fill="#1a1a1a" stroke="#FFD700" strokeWidth="1.5" />
+                  <rect x="52" y="78" width="12" height="14" rx="5" fill="#1a1a1a" stroke="#FFD700" strokeWidth="1.5" />
+                </svg>
               </div>
 
               <div>
