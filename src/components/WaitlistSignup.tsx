@@ -252,7 +252,11 @@ export function WaitlistSignup() {
           {/* LIBRARY */}
           {screen === "library" && (
             <div className="animate-fade-in">
-              <Library />
+              <Library onXpEarned={(earned) => {
+                setXp(prev => prev + earned)
+                setBounceXp(true)
+                setTimeout(() => setBounceXp(false), 600)
+              }} />
             </div>
           )}
 
